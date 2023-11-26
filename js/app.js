@@ -1,68 +1,67 @@
 $(function () {
+  var header = $('#header'),
+    introH = $('#intro').innerHeight(),
+    scrollOffset = $(window).scrollTop()
 
-   var header = $("#header"),
-      introH = $("#intro").innerHeight(),
-      scrollOffset = $(window).scrollTop();
+  /* Fixed Header */
+  checkScroll(scrollOffset)
 
+  $(window).on('scroll', function () {
+    scrollOffset = $(this).scrollTop()
 
-   /* Fixed Header */
-   checkScroll(scrollOffset);
+    checkScroll(scrollOffset)
+  })
 
-   $(window).on("scroll", function () {
-      scrollOffset = $(this).scrollTop();
+  function checkScroll(scrollOffset) {
+    if (scrollOffset >= introH) {
+      header.addClass('fixed')
+    } else {
+      header.removeClass('fixed')
+    }
+  }
 
-      checkScroll(scrollOffset);
-   });
+  /* Smooth scroll */
+  $('[data-scroll]').on('click', function (event) {
+    event.preventDefault()
 
-   function checkScroll(scrollOffset) {
-      if (scrollOffset >= introH) {
-         header.addClass("fixed");
-      } else {
-         header.removeClass("fixed");
-      }
-   }
+    var $this = $(this),
+      blockId = $this.data('scroll'),
+      blockOffset = $(blockId).offset().top
 
-   /* Smooth scroll */
-   $("[data-scroll]").on("click", function (event) {
-      event.preventDefault();
+    $('#nav a').removeClass('active')
+    $this.addClass('active')
 
-      var $this = $(this),
-         blockId = $this.data('scroll'),
-         blockOffset = $(blockId).offset().top;
+    $('html, body').animate(
+      {
+        scrollTop: blockOffset,
+      },
+      500,
+    )
+  })
 
-      $("#nav a").removeClass("active");
-      $this.addClass("active");
+  /* Menu nav toggle */
+  $('#nav_toggle').on('click', function (event) {
+    event.preventDefault()
 
-      $("html, body").animate({
-         scrollTop: blockOffset
-      }, 500);
-   });
+    $(this).toggleClass('active')
+    $('#nav').toggleClass('active')
+  })
 
-   /* Menu nav toggle */
-   $("#nav_toggle").on("click", function (event) {
-      event.preventDefault();
+  /* Collapse */
+  $('[data-collapse]').on('click', function (event) {
+    event.preventDefault()
 
-      $(this).toggleClass("active");
-      $("#nav").toggleClass("active");
-   });
+    var $this = $(this),
+      blockId = $this.data('collapse')
 
+    $this.toggleClass('active')
+  })
 
-   /* Collapse */
-   $("[data-collapse]").on("click", function (event) {
-      event.preventDefault();
-
-      var $this = $(this),
-         blockId = $this.data('collapse');
-
-      $this.toggleClass("active");
-   });
-
-   /* Slider */
-   $("[data-slider]").slick({
-      infinite: true,
-      fade: false,
-      slidesToShow: 1,
-      slidesToScroll: 1
-   });
-
-});
+  /* Slider */
+  $('[data-slider]').slick({
+    infinite: true,
+    fade: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  })
+})
